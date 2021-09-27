@@ -12,3 +12,4 @@ Lua面向对象Class，包含getter、多重继承、重写等实现
 
 可参考案例[example.lua](https://github.com/GrayGuardian/lua-class/blob/main/example.lua)
 
+![](./src/image.png)
