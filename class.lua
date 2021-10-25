@@ -20,7 +20,27 @@ end
 local getObjectMetatable = function (class)
 	local metatable = {}
 	-- __index
-	metatable.__index = class;
+	metatable.__index = function ( t,k )
+		local result = nil
+		-- 类
+		result = getClassValue(t,class,k)
+		if(result~=nil) then
+			return result;
+		end
+		-- 父类
+		local t_cls = class
+		repeat
+			local super = rawget(t_cls,'super')
+			if(super~=nil) then
+				result = getClassValue(t,super,k)
+				if(result~=nil) then
+					return result;
+				end
+			end
+			t_cls = super
+		until( t_cls == nil or result ~= nil )
+		return results
+	end
 	-- __tostring
 	metatable.__tostringx = function (t)
 		metatable.__tostring = nil
@@ -35,28 +55,6 @@ end
 -- 获得类元表
 local getClassMetatable = function (object,class,...)
 	local metatable = {}
-	-- __index
-	metatable.__index = function(t,k)
-		local result = nil
-		-- 类
-		result = getClassValue(object,class,k)
-		if(result~=nil) then
-			return result;
-		end
-		-- 父类
-		local t_cls = class
-		repeat
-			local super = rawget(t_cls,'super')
-			if(super~=nil) then
-				result = getClassValue(object,super,k)
-				if(result~=nil) then
-					return result;
-				end
-			end
-			t_cls = super
-		until( t_cls == nil or result ~= nil )
-		return result
-	end
 	-- __tostring
 	metatable.__tostringx = function (t)
 		metatable.__tostring = nil
@@ -129,3 +127,4 @@ local class = function (className,super)
 end
 
 return class
+
