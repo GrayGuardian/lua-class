@@ -39,7 +39,7 @@ local getClassMetatable = function (object,class,...)
 	metatable.__index = function(t,k)
 		local result = nil
 		-- 类
-		result = getClassValue(t,class,k)
+		result = getClassValue(object,class,k)
 		if(result~=nil) then
 			return result;
 		end
@@ -48,7 +48,7 @@ local getClassMetatable = function (object,class,...)
 		repeat
 			local super = rawget(t_cls,'super')
 			if(super~=nil) then
-				result = getClassValue(t,super,k)
+				result = getClassValue(object,super,k)
 				if(result~=nil) then
 					return result;
 				end
